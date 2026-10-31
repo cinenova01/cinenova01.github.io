@@ -1038,5 +1038,283 @@ document.getElementById("cnSearch").addEventListener("input",function(){
   </div>
 </div>
  
+<!-- CINENOVA: 30 MOVIE COLLECTION -->
+<section id="cn-poster-section">
+  <style>
+    #cn-poster-section {
+      color: inherit;
+      margin: 30px 0;
+      font-family: Arial, sans-serif;
+    }
+    #cn-poster-section .cn-heading {
+      font-size: 25px;
+      font-weight: 800;
+      margin: 20px 0 8px;
+    }
+    #cn-poster-section .cn-subtitle {
+      opacity: .7;
+      margin-bottom: 18px;
+      font-size: 13px;
+    }
+    #cn-poster-section .cn-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0;
+    }
+    #cn-poster-section .cn-tabs button {
+      border: 1px solid #8885;
+      border-radius: 20px;
+      padding: 9px 15px;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+    }
+    #cn-poster-section .cn-tabs button.active {
+      background: #e50914;
+      color: white;
+      border-color: #e50914;
+    }
+    #cn-poster-section .cn-grid {
+      display: grid;
+      grid-template-columns: repeat(5,minmax(0,1fr));
+      gap: 15px;
+    }
+    #cn-poster-section .cn-card {
+      min-width: 0;
+      overflow: hidden;
+      border-radius: 10px;
+      background: #8881;
+      cursor: pointer;
+      transition: transform .2s;
+    }
+    #cn-poster-section .cn-card:hover {
+      transform: translateY(-5px);
+    }
+    #cn-poster-section .cn-poster {
+      width: 100%;
+      aspect-ratio: 2/3;
+      display: block;
+      object-fit: cover;
+      background: linear-gradient(135deg,#222,#555);
+    }
+    #cn-poster-section .cn-info {
+      padding: 10px;
+    }
+    #cn-poster-section .cn-info h3 {
+      font-size: 14px;
+      margin: 0 0 7px;
+      line-height: 1.4;
+    }
+    #cn-poster-section .cn-tag {
+      display: inline-block;
+      background: #e50914;
+      color: white;
+      padding: 4px 7px;
+      border-radius: 4px;
+      font-size: 10px;
+    }
+    #cn-poster-section .cn-year {
+      font-size: 11px;
+      opacity: .7;
+      margin-top: 7px;
+    }
+    #cn-poster-section .cn-modal {
+      display: none;
+      position: fixed;
+      z-index: 99999;
+      inset: 0;
+      background: #000e;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    #cn-poster-section .cn-modal-box {
+      background: #191919;
+      color: white;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 340px;
+      width: 100%;
+      text-align: center;
+    }
+    #cn-poster-section .cn-modal-box img {
+      width: 145px;
+      border-radius: 8px;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+    }
+    #cn-poster-section .cn-close {
+      float: right;
+      background: #e50914;
+      color: white;
+      border: 0;
+      padding: 7px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    @media(max-width:700px) {
+      #cn-poster-section .cn-grid {
+        grid-template-columns: repeat(3,minmax(0,1fr));
+        gap: 10px;
+      }
+    }
+    @media(max-width:420px) {
+      #cn-poster-section .cn-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+      }
+    }
+  </style>
+
+  <h2 class="cn-heading">🎬 CineNova Movie Collection</h2>
+  <p class="cn-subtitle">Explore Hollywood, Bollywood & South Indian Movies</p>
+
+  <div class="cn-tabs">
+    <button class="active" data-filter="All">All Movies</button>
+    <button data-filter="Hollywood">Hollywood</button>
+    <button data-filter="Bollywood">Bollywood</button>
+    <button data-filter="South Indian">South Indian</button>
+  </div>
+
+  <div class="cn-grid" id="cn-movie-grid"></div>
+
+  <div class="cn-modal" id="cn-movie-modal">
+    <div class="cn-modal-box">
+      <button class="cn-close" id="cn-modal-close">✕ Close</button>
+      <div style="clear:both;height:12px"></div>
+      <img id="cn-modal-image" alt="Movie poster">
+      <h2 id="cn-modal-title"></h2>
+      <p id="cn-modal-details"></p>
+      <p style="font-size:12px;opacity:.7">
+        Movie information only. Watch through authorized platforms.
+      </p>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    const root = document.getElementById('cn-poster-section');
+    if(root.dataset.loaded) return;
+    root.dataset.loaded = 'yes';
+
+    const movies = [
+      // HOLLYWOOD
+      {name:"Avatar",wiki:"Avatar (2009 film)",year:2009,cat:"Hollywood"},
+      {name:"Dune: Part Two",wiki:"Dune: Part Two",year:2024,cat:"Hollywood"},
+      {name:"Oppenheimer",wiki:"Oppenheimer (film)",year:2023,cat:"Hollywood"},
+      {name:"Interstellar",wiki:"Interstellar (film)",year:2014,cat:"Hollywood"},
+      {name:"Avengers: Endgame",wiki:"Avengers: Endgame",year:2019,cat:"Hollywood"},
+      {name:"Spider-Man: No Way Home",wiki:"Spider-Man: No Way Home",year:2021,cat:"Hollywood"},
+      {name:"The Batman",wiki:"The Batman (film)",year:2022,cat:"Hollywood"},
+      {name:"Top Gun: Maverick",wiki:"Top Gun: Maverick",year:2022,cat:"Hollywood"},
+      {name:"Inside Out 2",wiki:"Inside Out 2",year:2024,cat:"Hollywood"},
+      {name:"Jurassic World Dominion",wiki:"Jurassic World Dominion",year:2022,cat:"Hollywood"},
+
+      // BOLLYWOOD
+      {name:"Jawan",wiki:"Jawan (film)",year:2023,cat:"Bollywood"},
+      {name:"Pathaan",wiki:"Pathaan (film)",year:2023,cat:"Bollywood"},
+      {name:"Animal",wiki:"Animal (2023 Indian film)",year:2023,cat:"Bollywood"},
+      {name:"3 Idiots",wiki:"3 Idiots",year:2009,cat:"Bollywood"},
+      {name:"Dangal",wiki:"Dangal (film)",year:2016,cat:"Bollywood"},
+      {name:"Chhaava",wiki:"Chhaava",year:2025,cat:"Bollywood"},
+      {name:"Stree 2",wiki:"Stree 2",year:2024,cat:"Bollywood"},
+      {name:"Bajrangi Bhaijaan",wiki:"Bajrangi Bhaijaan",year:2015,cat:"Bollywood"},
+      {name:"Gadar 2",wiki:"Gadar 2",year:2023,cat:"Bollywood"},
+      {name:"Bhool Bhulaiyaa 3",wiki:"Bhool Bhulaiyaa 3",year:2024,cat:"Bollywood"},
+
+      // SOUTH INDIAN
+      {name:"Pushpa 2: The Rule",wiki:"Pushpa 2: The Rule",year:2024,cat:"South Indian"},
+      {name:"Kalki 2898 AD",wiki:"Kalki 2898 AD",year:2024,cat:"South Indian"},
+      {name:"RRR",wiki:"RRR (film)",year:2022,cat:"South Indian"},
+      {name:"Baahubali 2",wiki:"Baahubali 2: The Conclusion",year:2017,cat:"South Indian"},
+      {name:"KGF Chapter 2",wiki:"K.G.F: Chapter 2",year:2022,cat:"South Indian"},
+      {name:"Leo",wiki:"Leo (2023 Indian film)",year:2023,cat:"South Indian"},
+      {name:"Vikram",wiki:"Vikram (2022 film)",year:2022,cat:"South Indian"},
+      {name:"Kantara",wiki:"Kantara (film)",year:2022,cat:"South Indian"},
+      {name:"Jailer",wiki:"Jailer (2023 film)",year:2023,cat:"South Indian"},
+      {name:"Devara: Part 1",wiki:"Devara: Part 1",year:2024,cat:"South Indian"}
+    ];
+
+    const grid = root.querySelector('#cn-movie-grid');
+
+    function render(filter){
+      grid.innerHTML = '';
+      movies.filter(m=>filter==='All'||m.cat===filter).forEach(m=>{
+        const card=document.createElement('div');
+        card.className='cn-card';
+
+        const img=document.createElement('img');
+        img.className='cn-poster';
+        img.alt=m.name+' poster';
+        img.loading='lazy';
+        img.src='data:image/svg+xml,'+encodeURIComponent(
+          '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450"><rect width="100%" height="100%" fill="#292929"/><text x="50%" y="50%" fill="white" font-size="18" text-anchor="middle">Loading Poster...</text></svg>'
+        );
+
+        const info=document.createElement('div');
+        info.className='cn-info';
+
+        const h=document.createElement('h3');
+        h.textContent=m.name;
+
+        const tag=document.createElement('span');
+        tag.className='cn-tag';
+        tag.textContent=m.cat;
+
+        const year=document.createElement('div');
+        year.className='cn-year';
+        year.textContent='Release: '+m.year;
+
+        info.append(h,tag,year);
+        card.append(img,info);
+        grid.appendChild(card);
+
+        card.addEventListener('click',()=>{
+          root.querySelector('#cn-modal-image').src=img.src;
+          root.querySelector('#cn-modal-title').textContent=m.name;
+          root.querySelector('#cn-modal-details').textContent=
+            m.cat+' • '+m.year;
+          root.querySelector('#cn-movie-modal').style.display='flex';
+        });
+
+        // Fetch actual movie-page thumbnail from Wikipedia
+        fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+
+          encodeURIComponent(m.wiki.replace(/ /g,'_')))
+          .then(r=>{if(!r.ok) throw Error('Poster unavailable');return r.json();})
+          .then(data=>{
+            if(data.thumbnail && data.thumbnail.source){
+              img.src=data.thumbnail.source;
+            }else{
+              img.alt=m.name+' poster unavailable';
+            }
+          })
+          .catch(()=>{img.alt=m.name+' poster unavailable';});
+      });
+    }
+
+    root.querySelectorAll('.cn-tabs button').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        root.querySelectorAll('.cn-tabs button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        render(btn.dataset.filter);
+      });
+    });
+
+    root.querySelector('#cn-modal-close').addEventListener('click',()=>{
+      root.querySelector('#cn-movie-modal').style.display='none';
+    });
+
+    root.querySelector('#cn-movie-modal').addEventListener('click',e=>{
+      if(e.target.id==='cn-movie-modal'){
+        e.currentTarget.style.display='none';
+      }
+    });
+
+    render('All');
+  })();
+  </script>
+</section>
+<!-- END CINENOVA MOVIE COLLECTION -->
+ 
 </body>
 </html>
