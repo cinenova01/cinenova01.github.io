@@ -492,5 +492,166 @@ document.getElementById("cnSearch").addEventListener("input",function(){
 })();
 </script>
  
+<!-- CINENOVA MARVEL COLLECTION -->
+<section id="cn-marvel">
+  <div class="cn-marvel-heading">
+    <span>MARVEL STUDIOS COLLECTION</span>
+    <h2>Marvel Universe</h2>
+    <p>Explore the legendary superheroes and epic adventures.</p>
+  </div>
+
+  <div class="cn-marvel-grid" id="cn-marvel-grid"></div>
+</section>
+
+<style>
+#cn-marvel {
+  max-width: 1200px;
+  margin: 35px auto;
+  padding: 35px 18px;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+#cn-marvel .cn-marvel-heading {
+  margin-bottom: 25px;
+}
+#cn-marvel .cn-marvel-heading span {
+  color: #e8ad45;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+#cn-marvel h2 {
+  font-size: 30px;
+  margin: 10px 0;
+}
+#cn-marvel .cn-marvel-heading p {
+  color: #aaa;
+  font-size: 14px;
+}
+#cn-marvel .cn-marvel-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 17px;
+}
+#cn-marvel .cn-marvel-card {
+  overflow: hidden;
+  background: #171717;
+  border: 1px solid #333;
+  border-radius: 12px;
+  transition: .3s;
+}
+#cn-marvel .cn-marvel-card:hover {
+  transform: translateY(-5px);
+  border-color: #e8ad45;
+}
+#cn-marvel .cn-marvel-card img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  display: block;
+  background: #222;
+}
+#cn-marvel .cn-marvel-info {
+  padding: 12px;
+}
+#cn-marvel .cn-marvel-info h3 {
+  font-size: 14px;
+  margin: 0 0 7px;
+}
+#cn-marvel .cn-marvel-info p {
+  color: #aaa;
+  font-size: 12px;
+  margin: 0;
+}
+#cn-marvel .cn-marvel-info a {
+  display: inline-block;
+  color: #e8ad45;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: bold;
+  margin-top: 12px;
+}
+#cn-marvel .cn-marvel-info a:hover {
+  text-decoration: underline;
+}
+@media(max-width:700px) {
+  #cn-marvel .cn-marvel-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  #cn-marvel h2 {
+    font-size: 25px;
+  }
+}
+</style>
+
+<script>
+(function () {
+  const movies = [
+    {name:"Iron Man",year:"2008",wiki:"Iron_Man_(2008_film)"},
+    {name:"Iron Man 2",year:"2010",wiki:"Iron_Man_2"},
+    {name:"The Avengers",year:"2012",wiki:"The_Avengers_(2012_film)"},
+    {name:"Iron Man 3",year:"2013",wiki:"Iron_Man_3"},
+    {name:"Captain America: Civil War",year:"2016",wiki:"Captain_America:_Civil_War"},
+    {name:"Doctor Strange",year:"2016",wiki:"Doctor_Strange_(2016_film)"},
+    {name:"Spider-Man: Homecoming",year:"2017",wiki:"Spider-Man:_Homecoming"},
+    {name:"Thor: Ragnarok",year:"2017",wiki:"Thor:_Ragnarok"},
+    {name:"Black Panther",year:"2018",wiki:"Black_Panther_(film)"},
+    {name:"Avengers: Infinity War",year:"2018",wiki:"Avengers:_Infinity_War"},
+    {name:"Avengers: Endgame",year:"2019",wiki:"Avengers:_Endgame"},
+    {name:"Spider-Man: Far From Home",year:"2019",wiki:"Spider-Man:_Far_From_Home"},
+    {name:"Spider-Man: No Way Home",year:"2021",wiki:"Spider-Man:_No_Way_Home"},
+    {name:"Avengers: Age of Ultron",year:"2015",wiki:"Avengers:_Age_of_Ultron"},
+    {name:"Guardians of the Galaxy",year:"2014",wiki:"Guardians_of_the_Galaxy_(film)"}
+  ];
+
+  const grid = document.getElementById("cn-marvel-grid");
+  if (!grid) return;
+
+  movies.forEach(movie => {
+    const card = document.createElement("article");
+    card.className = "cn-marvel-card";
+
+    const img = document.createElement("img");
+    img.alt = movie.name + " poster";
+    img.loading = "lazy";
+    img.src = "https://placehold.co/400x600/171717/e8ad45?text=" +
+      encodeURIComponent(movie.name);
+
+    const info = document.createElement("div");
+    info.className = "cn-marvel-info";
+
+    const title = document.createElement("h3");
+    title.textContent = movie.name;
+
+    const year = document.createElement("p");
+    year.textContent = "Release Year: " + movie.year;
+
+    const link = document.createElement("a");
+    link.href = "https://en.wikipedia.org/wiki/" + movie.wiki;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "VIEW MOVIE DETAILS ↗";
+
+    info.append(title, year, link);
+    card.append(img, info);
+    grid.append(card);
+
+    fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" +
+      encodeURIComponent(movie.wiki))
+      .then(response => {
+        if (!response.ok) throw new Error("Image unavailable");
+        return response.json();
+      })
+      .then(data => {
+        if (data.thumbnail && data.thumbnail.source) {
+          img.src = data.thumbnail.source;
+        }
+      })
+      .catch(() => {});
+  });
+})();
+</script>
+ 
 </body>
 </html>
