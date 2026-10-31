@@ -851,5 +851,171 @@ document.getElementById("cnSearch").addEventListener("input",function(){
 }
  </style>
  
+<!-- CINENOVA ANIME MOVIE COLLECTION -->
+<section id="cn-anime-movies">
+  <div class="cn-anime-heading">
+    <span>JAPANESE ANIMATION COLLECTION</span>
+    <h2>Popular Anime Movies</h2>
+    <p>Discover beautiful stories and unforgettable adventures.</p>
+  </div>
+
+  <div class="cn-anime-grid" id="cn-anime-grid"></div>
+</section>
+
+<style>
+#cn-anime-movies {
+  max-width: 1200px;
+  margin: 35px auto;
+  padding: 35px 18px;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+#cn-anime-movies .cn-anime-heading {
+  margin-bottom: 24px;
+}
+#cn-anime-movies .cn-anime-heading span {
+  color: #e8ad45;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+#cn-anime-movies h2 {
+  font-size: 29px;
+  margin: 10px 0;
+}
+#cn-anime-movies .cn-anime-heading p {
+  color: #aaa;
+  font-size: 14px;
+}
+#cn-anime-movies .cn-anime-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 17px;
+}
+#cn-anime-movies .cn-anime-card {
+  overflow: hidden;
+  background: #171717;
+  border: 1px solid #333;
+  border-radius: 12px;
+  transition: .3s;
+}
+#cn-anime-movies .cn-anime-card:hover {
+  transform: translateY(-5px);
+  border-color: #e8ad45;
+}
+#cn-anime-movies .cn-anime-card img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  display: block;
+  background: #222;
+}
+#cn-anime-movies .cn-anime-info {
+  padding: 12px;
+}
+#cn-anime-movies .cn-anime-info h3 {
+  font-size: 14px;
+  margin: 0 0 7px;
+}
+#cn-anime-movies .cn-anime-info p {
+  color: #aaa;
+  font-size: 12px;
+  margin: 0;
+}
+#cn-anime-movies .cn-anime-info a {
+  display: inline-block;
+  color: #e8ad45;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: bold;
+  margin-top: 12px;
+}
+#cn-anime-movies .cn-anime-info a:hover {
+  text-decoration: underline;
+}
+@media(max-width:700px) {
+  #cn-anime-movies .cn-anime-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  #cn-anime-movies h2 {
+    font-size: 24px;
+  }
+}
+</style>
+
+<script>
+(function () {
+  const animeMovies = [
+    {name:"Your Name",year:"2016",wiki:"Your_Name_(2016_film)"},
+    {name:"Suzume",year:"2022",wiki:"Suzume"},
+    {name:"Spirited Away",year:"2001",wiki:"Spirited_Away"},
+    {name:"A Silent Voice",year:"2016",wiki:"A_Silent_Voice_(film)"},
+    {name:"Weathering With You",year:"2019",wiki:"Weathering_with_You"},
+    {name:"The Boy and the Heron",year:"2023",wiki:"The_Boy_and_the_Heron"},
+    {name:"Howl's Moving Castle",year:"2004",wiki:"Howl%27s_Moving_Castle"},
+    {name:"Princess Mononoke",year:"1997",wiki:"Princess_Mononoke"},
+    {name:"My Neighbor Totoro",year:"1988",wiki:"My_Neighbor_Totoro"},
+    {name:"Ponyo",year:"2008",wiki:"Ponyo"},
+    {name:"The Garden of Words",year:"2013",wiki:"The_Garden_of_Words"},
+    {name:"The Wind Rises",year:"2013",wiki:"The_Wind_Rises"},
+    {name:"The Girl Who Leapt Through Time",year:"2006",wiki:"The_Girl_Who_Leapt_Through_Time"},
+    {name:"5 Centimeters per Second",year:"2007",wiki:"5_Centimeters_Per_Second"},
+    {name:"Wolf Children",year:"2012",wiki:"Wolf_Children"},
+    {name:"The Boy and the Beast",year:"2015",wiki:"The_Boy_and_the_Beast"},
+    {name:"Demon Slayer: Mugen Train",year:"2020",wiki:"Demon_Slayer:_Kimetsu_no_Yaiba_–_The_Movie:_Mugen_Train"},
+    {name:"Jujutsu Kaisen 0",year:"2021",wiki:"Jujutsu_Kaisen_0"},
+    {name:"One Piece Film: Red",year:"2022",wiki:"One_Piece_Film:_Red"},
+    {name:"Dragon Ball Super: Broly",year:"2018",wiki:"Dragon_Ball_Super:_Broly"}
+  ];
+
+  const grid = document.getElementById("cn-anime-grid");
+  if (!grid) return;
+
+  animeMovies.forEach(movie => {
+    const card = document.createElement("article");
+    card.className = "cn-anime-card";
+
+    const img = document.createElement("img");
+    img.alt = movie.name + " anime movie poster";
+    img.loading = "lazy";
+    img.src = "https://placehold.co/400x600/171717/e8ad45?text=" +
+      encodeURIComponent(movie.name);
+
+    const info = document.createElement("div");
+    info.className = "cn-anime-info";
+
+    const title = document.createElement("h3");
+    title.textContent = movie.name;
+
+    const year = document.createElement("p");
+    year.textContent = "Release Year: " + movie.year;
+
+    const link = document.createElement("a");
+    link.href = "https://en.wikipedia.org/wiki/" + movie.wiki;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "VIEW DETAILS ↗";
+
+    info.append(title, year, link);
+    card.append(img, info);
+    grid.append(card);
+
+    fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" +
+      encodeURIComponent(movie.wiki))
+      .then(response => {
+        if (!response.ok) throw new Error("Image unavailable");
+        return response.json();
+      })
+      .then(data => {
+        if (data.thumbnail && data.thumbnail.source) {
+          img.src = data.thumbnail.source;
+        }
+      })
+      .catch(() => {});
+  });
+})();
+       </script>
+ 
 </body>
 </html>
