@@ -330,5 +330,167 @@ document.getElementById("cnSearch").addEventListener("input",function(){
 </script>
 <!-- CINENOVA MOVIES & ANIME CONTENT END -->
 
+<!-- CINENOVA POPULAR INDIAN MOVIES -->
+<section id="cn-popular">
+  <div class="cn-popular-heading">
+    <span>HANDPICKED FOR YOU</span>
+    <h2>Popular Indian Movies</h2>
+    <p>Explore blockbuster movies from Indian cinema.</p>
+  </div>
+
+  <div class="cn-popular-grid" id="cn-popular-grid"></div>
+</section>
+
+<style>
+#cn-popular {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 35px 18px;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+#cn-popular .cn-popular-heading {
+  margin-bottom: 24px;
+}
+#cn-popular .cn-popular-heading span {
+  color: #e8ad45;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+#cn-popular h2 {
+  font-size: 29px;
+  margin: 9px 0;
+}
+#cn-popular .cn-popular-heading p {
+  color: #aaa;
+  font-size: 14px;
+}
+#cn-popular .cn-popular-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+#cn-popular .cn-movie-card {
+  min-width: 0;
+  overflow: hidden;
+  background: #171717;
+  border: 1px solid #303030;
+  border-radius: 12px;
+  transition: transform .25s, border-color .25s;
+}
+#cn-popular .cn-movie-card:hover {
+  transform: translateY(-5px);
+  border-color: #e8ad45;
+}
+#cn-popular .cn-movie-card img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  display: block;
+  object-fit: cover;
+  background: #292929;
+}
+#cn-popular .cn-movie-info {
+  padding: 12px;
+}
+#cn-popular .cn-movie-info h3 {
+  font-size: 15px;
+  margin: 0 0 7px;
+  color: white;
+}
+#cn-popular .cn-movie-info p {
+  font-size: 12px;
+  color: #aaa;
+  margin: 0;
+}
+#cn-popular .cn-movie-info a {
+  display: inline-block;
+  margin-top: 11px;
+  color: #e8ad45;
+  font-size: 12px;
+  text-decoration: none;
+  font-weight: bold;
+}
+#cn-popular .cn-movie-info a:hover {
+  text-decoration: underline;
+}
+@media(max-width:700px) {
+  #cn-popular .cn-popular-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  #cn-popular h2 {
+    font-size: 24px;
+  }
+}
+</style>
+
+<script>
+(function () {
+  const movies = [
+    { title: "KGF Chapter 2", year: "2022", language: "Kannada", wiki: "K.G.F:_Chapter_2" },
+    { title: "Marco", year: "2024", language: "Malayalam", wiki: "Marco_(2024_film)" },
+    { title: "Jawan", year: "2023", language: "Hindi", wiki: "Jawan_(film)" },
+    { title: "Pushpa 2: The Rule", year: "2024", language: "Telugu", wiki: "Pushpa_2:_The_Rule" },
+    { title: "Salaar", year: "2023", language: "Telugu", wiki: "Salaar:_Part_1_–_Ceasefire" },
+    { title: "Kalki 2898 AD", year: "2024", language: "Telugu", wiki: "Kalki_2898_AD" },
+    { title: "Animal", year: "2023", language: "Hindi", wiki: "Animal_(2023_Indian_film)" },
+    { title: "Leo", year: "2023", language: "Tamil", wiki: "Leo_(2023_Indian_film)" },
+    { title: "RRR", year: "2022", language: "Telugu", wiki: "RRR" },
+    { title: "Baahubali 2", year: "2017", language: "Telugu", wiki: "Baahubali_2:_The_Conclusion" },
+    { title: "Kantara", year: "2022", language: "Kannada", wiki: "Kantara_(film)" },
+    { title: "Pathaan", year: "2023", language: "Hindi", wiki: "Pathaan_(film)" }
+  ];
+
+  const grid = document.getElementById("cn-popular-grid");
+  if (!grid) return;
+
+  movies.forEach(movie => {
+    const card = document.createElement("article");
+    card.className = "cn-movie-card";
+
+    const img = document.createElement("img");
+    img.alt = movie.title + " poster";
+    img.loading = "lazy";
+    img.src = "https://placehold.co/400x600/171717/e8ad45?text=" +
+      encodeURIComponent(movie.title);
+
+    const info = document.createElement("div");
+    info.className = "cn-movie-info";
+
+    const heading = document.createElement("h3");
+    heading.textContent = movie.title;
+
+    const details = document.createElement("p");
+    details.textContent = movie.year + " • " + movie.language;
+
+    const link = document.createElement("a");
+    link.href = "https://en.wikipedia.org/wiki/" + movie.wiki;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "MOVIE DETAILS ↗";
+
+    info.append(heading, details, link);
+    card.append(img, info);
+    grid.append(card);
+
+    fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" +
+      encodeURIComponent(movie.wiki))
+      .then(response => {
+        if (!response.ok) throw new Error("Poster unavailable");
+        return response.json();
+      })
+      .then(data => {
+        if (data.thumbnail && data.thumbnail.source) {
+          img.src = data.thumbnail.source;
+        }
+      })
+      .catch(() => {
+        // Keep the movie title placeholder if no image is available.
+      });
+  });
+})();
+</script>
+ 
 </body>
 </html>
