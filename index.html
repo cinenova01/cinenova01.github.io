@@ -215,5 +215,120 @@ document.getElementById("search").addEventListener("input",function(){
  });
 });
 </script>
+ 
+<!-- CINENOVA MOVIES & ANIME CONTENT START -->
+<style>
+#cinenova-library{
+  background:#0b1020;color:white;padding:30px 5%;
+  font-family:Arial,sans-serif;
+}
+#cinenova-library h2{
+  font-size:25px;margin:25px 0 18px;
+  border-left:4px solid #ff4545;padding-left:12px;
+}
+.cn-search{
+  width:100%;padding:13px;border:1px solid #444;
+  border-radius:8px;background:#171f32;color:white;
+  margin-bottom:25px;font-size:15px;
+}
+.cn-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));
+  gap:17px;
+}
+.cn-card{background:#171f32;border-radius:10px;overflow:hidden}
+.cn-card img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block}
+.cn-info{padding:12px}
+.cn-info h3{font-size:15px;margin-bottom:8px}
+.cn-info p{font-size:12px;line-height:1.5;color:#c5cada}
+.cn-info a{display:inline-block;margin-top:10px;color:#ff7777;text-decoration:none;font-size:12px}
+.cn-label{font-size:10px;color:#ff7777;margin-bottom:7px}
+.cn-hidden{display:none}
+</style>
+
+<section id="cinenova-library">
+<h2>🎬 Popular Movies</h2>
+<input class="cn-search" id="cnSearch"
+placeholder="Search Movies and Anime..." type="search">
+<div class="cn-grid" id="cnMovieGrid"></div>
+
+<h2>🍿 Popular Anime</h2>
+<div class="cn-grid" id="cnAnimeGrid"></div>
+</section>
+
+<script>
+const cnMovieData=[
+["Interstellar","A team of explorers travels through a wormhole in search of a new home for humanity.","Interstellar (film)"],
+["Inception","A skilled thief enters dreams to steal secrets in this mind-bending science fiction thriller.","Inception"],
+["The Dark Knight","Batman faces the Joker in a battle for the future of Gotham City.","The Dark Knight (film)"],
+["Dune: Part Two","Paul Atreides joins the Fremen and fights for the future of Arrakis.","Dune: Part Two"],
+["RRR","Two revolutionaries form a powerful friendship during India's colonial era.","RRR (film)"],
+["3 Idiots","Three engineering students discover friendship, dreams and the true meaning of success.","3 Idiots"],
+["KGF Chapter 2","Rocky continues his rise to power in the dangerous Kolar Gold Fields.","K.G.F: Chapter 2"],
+["Spider-Man: Across the Spider-Verse","Miles Morales travels across the multiverse and meets different Spider-People.","Spider-Man: Across the Spider-Verse"],
+["Baahubali 2","A legendary kingdom faces betrayal, war and the truth behind a royal mystery.","Baahubali 2: The Conclusion"],
+["Jawan","A mysterious man fights corruption and challenges a powerful system.","Jawan (film)"]
+];
+
+const cnAnimeData=[
+["Demon Slayer","Tanjiro begins a dangerous journey to save his sister and defeat demons.","Demon Slayer: Kimetsu no Yaiba"],
+["Your Name","Two teenagers mysteriously begin switching bodies across different places.","Your Name"],
+["Spirited Away","A young girl enters a magical spirit world and searches for a way home.","Spirited Away"],
+["Suzume","A young girl travels across Japan to close mysterious doors.","Suzume"],
+["A Silent Voice","A former bully tries to reconnect with a deaf girl and make things right.","A Silent Voice (film)"],
+["Jujutsu Kaisen 0","Yuta Okkotsu discovers a dangerous curse and joins Jujutsu High.","Jujutsu Kaisen 0"],
+["Weathering With You","A boy meets a girl who can mysteriously control the weather.","Weathering with You"],
+["One Piece Film: Red","Luffy and his friends attend a concert by the famous singer Uta.","One Piece Film: Red"],
+["The Last: Naruto the Movie","Naruto faces a new threat while protecting the people he loves.","The Last: Naruto the Movie"],
+["Howl's Moving Castle","A young woman discovers magic and an extraordinary moving castle.","Howl's Moving Castle"]
+];
+
+async function cnLoadContent(items,gridId,type){
+ const grid=document.getElementById(gridId);
+ items.forEach(([name,description,page])=>{
+  const card=document.createElement("article");
+  card.className="cn-card";
+  const img=document.createElement("img");
+  img.alt=name+" poster";
+  img.loading="lazy";
+  img.src="https://placehold.co/400x600/171f32/ffffff?text="+encodeURIComponent(name);
+
+  const info=document.createElement("div");
+  info.className="cn-info";
+  info.innerHTML=`
+   <div class="cn-label">${type}</div>
+   <h3>${name}</h3>
+   <p>${description}</p>
+   <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(page.replaceAll(" ","_"))}" target="_blank" rel="noopener">Read More →</a>
+  `;
+  card.append(img,info);
+  grid.appendChild(card);
+
+  fetch("https://en.wikipedia.org/api/rest_v1/page/summary/"+encodeURIComponent(page))
+   .then(response=>{
+    if(!response.ok)throw new Error("Poster unavailable");
+    return response.json();
+   })
+   .then(data=>{
+    if(data.thumbnail && data.thumbnail.source){
+     img.src=data.thumbnail.source;
+    }
+   })
+   .catch(()=>console.log("Poster unavailable:",name));
+ });
+}
+
+cnLoadContent(cnMovieData,"cnMovieGrid","MOVIE");
+cnLoadContent(cnAnimeData,"cnAnimeGrid","ANIME");
+
+document.getElementById("cnSearch").addEventListener("input",function(){
+ const query=this.value.toLowerCase();
+ document.querySelectorAll("#cinenova-library .cn-card").forEach(card=>{
+  card.classList.toggle("cn-hidden",
+   !card.innerText.toLowerCase().includes(query));
+ });
+});
+</script>
+<!-- CINENOVA MOVIES & ANIME CONTENT END -->
+ 
 </body>
 </html>
