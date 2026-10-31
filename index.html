@@ -819,5 +819,198 @@ document.getElementById("cnSearch").addEventListener("input",function(){
 })();
        </script>
  
+<!-- CINENOVA DETAILS POPUP -->
+
+<style>
+#cn-details {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:rgba(0,0,0,.94);
+  overflow-y:auto;
+  padding:25px 12px;
+  color:white;
+  font-family:Arial,sans-serif;
+}
+#cn-details .cn-detail-box {
+  max-width:650px;
+  margin:20px auto;
+  background:#151c2b;
+  border-radius:14px;
+  overflow:hidden;
+  position:relative;
+}
+#cn-details .cn-banner {
+  width:100%;
+  max-height:360px;
+  object-fit:cover;
+  display:block;
+}
+#cn-details .cn-detail-content {
+  padding:20px;
+}
+#cn-details h2 {margin:0 0 12px;}
+#cn-details p {
+  line-height:1.6;
+  color:#d0d5df;
+}
+#cn-details .cn-close {
+  position:absolute;
+  top:12px;
+  right:12px;
+  border:0;
+  background:#e50914;
+  color:white;
+  border-radius:50%;
+  width:38px;
+  height:38px;
+  font-size:22px;
+  cursor:pointer;
+}
+#cn-details .cn-watch {
+  display:inline-block;
+  padding:12px 20px;
+  background:#e50914;
+  color:white;
+  text-decoration:none;
+  border-radius:7px;
+  margin-top:10px;
+}
+#cn-details .cn-meta {
+  color:#ff5963;
+  font-size:13px;
+}
+</style>
+
+<div id="cn-details">
+  <div class="cn-detail-box">
+    <button class="cn-close" onclick="cnClose()">×</button>
+    <img id="cn-poster" class="cn-banner" src="" alt="Poster">
+    <div class="cn-detail-content">
+      <h2 id="cn-title"></h2>
+      <div class="cn-meta" id="cn-meta"></div>
+      <p id="cn-description"></p>
+      <a id="cn-trailer" class="cn-watch"
+         href="#" target="_blank" rel="noopener">
+        ▶ Watch Trailer
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const details = {
+    "The Dark Knight": {
+      year:"2008",
+      genre:"Action • Crime • Drama",
+      rating:"9.0/10",
+      description:"Batman faces the Joker, a criminal mastermind who creates chaos across Gotham City.",
+      trailer:"https://www.youtube.com/results?search_query=The+Dark+Knight+official+trailer"
+    },
+    "Interstellar": {
+      year:"2014",
+      genre:"Sci-Fi • Adventure",
+      rating:"8.7/10",
+      description:"A team of explorers travels beyond this galaxy to discover a new home for humanity.",
+      trailer:"https://www.youtube.com/results?search_query=Interstellar+official+trailer"
+    },
+    "Dune": {
+      year:"2021",
+      genre:"Sci-Fi • Adventure",
+      rating:"8.0/10",
+      description:"Paul Atreides travels to the dangerous desert planet Arrakis.",
+      trailer:"https://www.youtube.com/results?search_query=Dune+official+trailer"
+    },
+    "Inception": {
+      year:"2010",
+      genre:"Sci-Fi • Thriller",
+      rating:"8.8/10",
+      description:"A skilled thief enters people's dreams to steal secrets and plant an idea.",
+      trailer:"https://www.youtube.com/results?search_query=Inception+official+trailer"
+    },
+    "The Matrix": {
+      year:"1999",
+      genre:"Action • Sci-Fi",
+      rating:"8.7/10",
+      description:"A computer hacker discovers the shocking truth about his reality.",
+      trailer:"https://www.youtube.com/results?search_query=The+Matrix+official+trailer"
+    },
+    "Demon Slayer: Mugen Train": {
+      year:"2020",
+      genre:"Anime • Action • Fantasy",
+      rating:"8.2/10",
+      description:"Tanjiro and his companions board the Mugen Train for a dangerous mission.",
+      trailer:"https://www.youtube.com/results?search_query=Demon+Slayer+Mugen+Train+trailer"
+    },
+    "Jujutsu Kaisen 0": {
+      year:"2021",
+      genre:"Anime • Action • Fantasy",
+      rating:"7.8/10",
+      description:"Yuta Okkotsu joins Jujutsu High and learns to control a powerful curse.",
+      trailer:"https://www.youtube.com/results?search_query=Jujutsu+Kaisen+0+trailer"
+    },
+    "Spirited Away": {
+      year:"2001",
+      genre:"Anime • Fantasy • Adventure",
+      rating:"8.6/10",
+      description:"A young girl enters a mysterious spirit world and tries to save her parents.",
+      trailer:"https://www.youtube.com/results?search_query=Spirited+Away+trailer"
+    },
+    "Your Name": {
+      year:"2016",
+      genre:"Anime • Romance • Fantasy",
+      rating:"8.4/10",
+      description:"Two teenagers mysteriously begin switching bodies and form an unexpected connection.",
+      trailer:"https://www.youtube.com/results?search_query=Your+Name+2016+trailer"
+    },
+    "A Silent Voice": {
+      year:"2016",
+      genre:"Anime • Drama",
+      rating:"8.2/10",
+      description:"A former bully seeks forgiveness and a chance to reconnect with a deaf classmate.",
+      trailer:"https://www.youtube.com/results?search_query=A+Silent+Voice+trailer"
+    }
+  };
+
+  window.cnOpen = function(card) {
+    const title = card.querySelector("h3")?.innerText.trim();
+    const poster = card.querySelector("img")?.src;
+    if (!title || !details[title]) return;
+
+    const item = details[title];
+    document.getElementById("cn-title").textContent = title;
+    document.getElementById("cn-poster").src = poster || "";
+    document.getElementById("cn-meta").textContent =
+      item.year + " • " + item.genre + " • ⭐ " + item.rating;
+    document.getElementById("cn-description").textContent =
+      item.description;
+    document.getElementById("cn-trailer").href = item.trailer;
+    document.getElementById("cn-details").style.display = "block";
+    document.body.style.overflow = "hidden";
+  };
+
+  window.cnClose = function() {
+    document.getElementById("cn-details").style.display = "none";
+    document.body.style.overflow = "";
+  };
+
+  document.addEventListener("click", function(e) {
+    const card = e.target.closest(
+      '#cn-poster-section .cn-card'
+    );
+    if (card && !e.target.closest("a,button")) {
+      cnOpen(card);
+    }
+  });
+
+  document.getElementById("cn-details")
+    .addEventListener("click", function(e) {
+      if (e.target === this) cnClose();
+    });
+})();
+</script>
+ 
 </body>
 </html>
