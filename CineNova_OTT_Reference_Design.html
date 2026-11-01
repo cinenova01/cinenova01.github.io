@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
+<meta name="description" content="CineNova is your destination to discover movies, series and anime. Explore trending titles, curated collections and entertainment guides.">
+<title>CineNova — Discover Your Next Story</title>
+<style>
+:root{--bg:#050505;--panel:#111;--line:#ffffff18;--muted:#aaa;--white:#f5f5f5;--gold:#d8bd83}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,Arial,sans-serif}
+a{color:inherit;text-decoration:none}button,input{font:inherit}
+header{height:76px;position:sticky;top:0;z-index:20;background:#050505eF;backdrop-filter:blur(18px);border-bottom:1px solid #ffffff12}
+.nav{max-width:1440px;height:100%;margin:auto;padding:0 4.5%;display:flex;align-items:center;gap:34px}
+.brand{font-size:21px;font-weight:900;letter-spacing:3px;white-space:nowrap}.brand span{color:var(--gold)}
+nav{display:flex;align-items:center;gap:25px}nav a{font-size:11px;letter-spacing:2px;color:#c6c6c6;text-transform:uppercase}nav a:hover{color:#fff}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:15px}
+.search{width:190px;background:#101010;border:1px solid #333;border-radius:25px;padding:10px 15px;color:white;outline:none;font-size:12px}
+.icon-btn{background:none;border:0;color:#ddd;font-size:18px;cursor:pointer}
+.profile{font-size:11px;color:#ddd;border:1px solid #333;border-radius:20px;padding:8px 12px}
+main{max-width:1440px;margin:auto;padding:28px 4.5% 80px}
+.top-layout{display:grid;grid-template-columns:minmax(0,2.15fr) minmax(230px,.85fr);gap:22px}
+.feature{height:365px;position:relative;border-radius:24px;overflow:hidden;background:#161616}
+.feature:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#050505df 0%,#05050570 48%,#05050508 100%),linear-gradient(0deg,#050505a8,transparent 65%),url('https://image.tmdb.org/t/p/original/8b8R8l8QqZ5Qe2Q2X3p8l2q2q2q.jpg') center 35%/cover}
+.feature:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0008,transparent 45%);pointer-events:none}
+.feature-content{position:absolute;z-index:2;left:5%;bottom:35px;max-width:520px}
+.eyebrow{font-size:11px;color:#e4d4b5;letter-spacing:3px;text-transform:uppercase}
+.feature h1{font-size:clamp(28px,4vw,48px);margin:12px 0 10px;line-height:1.05}
+.feature p{font-size:13px;line-height:1.6;color:#ddd;max-width:440px}
+.meta{font-size:11px;color:#ddd;margin-top:14px}
+.play{display:inline-flex;align-items:center;gap:10px;background:#ffffff20;border:1px solid #ffffff55;color:white;border-radius:28px;padding:12px 20px;margin-top:16px;backdrop-filter:blur(12px);cursor:pointer}
+.play:hover{background:#ffffff35}
+.dots{position:absolute;z-index:3;top:22px;left:5%;display:flex;gap:8px}.dots i{width:6px;height:6px;background:#fff8;border-radius:50%}.dots i:first-child{background:white}
+.side{padding:7px 0}.side h3{font-size:17px;margin:0 0 15px}
+.watch-item{display:flex;gap:12px;align-items:center;margin:0 0 13px;min-width:0}
+.watch-item img{width:105px;height:61px;object-fit:cover;border-radius:9px;background:#222}
+.watch-item strong{display:block;font-size:12px;margin-bottom:6px}.watch-item small{font-size:10px;color:#aaa}
+.genre-wrap{margin:20px 0 26px}.genre-label{font-size:11px;color:#ccc;margin-bottom:10px}
+.genres{display:flex;gap:8px;overflow-x:auto;padding-bottom:5px;scrollbar-width:none}.genres::-webkit-scrollbar{display:none}
+.genre{white-space:nowrap;border:1px solid #ffffff24;background:#0b0b0b;color:#ddd;border-radius:20px;padding:9px 14px;font-size:11px;cursor:pointer}
+.genre.active,.genre:hover{background:#e8e1d3;color:#111;border-color:#e8e1d3}
+.section{margin-top:27px}.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-head h2{font-size:19px;margin:0;font-weight:600}.arrows{display:flex;gap:8px}.arrow{width:31px;height:31px;border-radius:50%;border:1px solid #ffffff30;background:#090909;color:#fff;cursor:pointer}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);grid-auto-columns:calc((100% - 6*14px)/7);gap:14px;overflow-x:auto;scrollbar-width:none;padding:2px 1px 12px;scroll-snap-type:x mandatory}
+.rail::-webkit-scrollbar{display:none}
+.card{min-width:0;scroll-snap-align:start;cursor:pointer}
+.poster-wrap{height:205px;position:relative;border-radius:12px;overflow:hidden;background:#171717;border:1px solid #ffffff12}
+.poster-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
+.card:hover .poster-wrap img{transform:scale(1.06)}
+.rating{font-size:10px;color:#c6c6c6;margin:7px 0 5px}
+.card h3{font-size:12px;font-weight:500;line-height:1.35;margin:0;color:#eee}
+.card .type{font-size:10px;color:#888;margin-top:5px}
+.empty{color:#aaa;padding:25px 0;display:none}
+footer{border-top:1px solid #ffffff18;padding:35px 4.5%;text-align:center;color:#888;font-size:12px}
+.footer-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:15px 0 22px}.footer-links a:hover{color:white}
+.modal{display:none;position:fixed;inset:0;background:#000d;z-index:40;align-items:center;justify-content:center;padding:20px}
+.modal-box{width:min(420px,100%);background:#151515;border:1px solid #ffffff30;border-radius:18px;padding:25px;position:relative}
+.modal-box h2{margin:0 0 10px}.modal-box p{color:#bbb;line-height:1.6;font-size:13px}.close{position:absolute;right:16px;top:12px;background:none;border:0;color:white;font-size:25px;cursor:pointer}
+@media(max-width:950px){.top-layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.side h3{grid-column:1/-1;margin-bottom:0}.watch-item{margin:0}.watch-item img{width:82px;height:55px}.rail{grid-auto-columns:calc((100% - 4*12px)/5)}.poster-wrap{height:190px}}
+@media(max-width:600px){
+header{height:62px}.nav{padding:0 4%;gap:16px}.brand{font-size:17px;letter-spacing:2px}nav{gap:12px}nav a{font-size:9px;letter-spacing:1px}.nav-right{gap:8px}.search{width:105px;padding:8px 10px;font-size:10px}.profile,.icon-btn{display:none}
+main{padding:18px 4% 55px}.feature{height:250px;border-radius:17px}.feature-content{left:6%;bottom:22px;right:5%}.feature h1{font-size:30px}.feature p{font-size:11px;margin:6px 0}.meta{font-size:9px;margin-top:8px}.play{padding:9px 15px;font-size:11px;margin-top:10px}.side{grid-template-columns:1fr 1fr;gap:12px}.side h3{font-size:15px}.watch-item img{width:75px;height:48px}.watch-item strong{font-size:10px}.watch-item small{font-size:9px}
+.genre-wrap{margin:18px 0 22px}.section{margin-top:24px}.section-head h2{font-size:16px}.rail{grid-auto-columns:calc((100% - 3*10px)/4);gap:10px}.poster-wrap{height:160px;border-radius:9px}.card h3{font-size:10px}.rating,.card .type{font-size:9px}
+}
+@media(max-width:380px){nav{gap:8px}nav a{font-size:8px}.search{width:88px}.rail{grid-auto-columns:calc((100% - 2*9px)/3)}.poster-wrap{height:170px}}
+</style>
+</head>
+<body>
+<header><div class="nav">
+<a class="brand" href="#home">CINE<span>NOVA</span></a>
+<nav><a href="#home">Home</a><a href="#trending">Movies</a><a href="#anime">Anime</a><a href="#about">About</a></nav>
+<div class="nav-right"><input class="search" id="search" placeholder="Search titles..." oninput="render()"><button class="icon-btn" aria-label="Search" onclick="document.getElementById('search').focus()">⌕</button><a class="profile" href="#about">CineNova ↗</a></div>
+</div></header>
+<main id="home">
+<div class="top-layout">
+<section class="feature" aria-label="Featured title">
+<div class="dots"><i></i><i></i><i></i></div>
+<div class="feature-content"><div class="eyebrow">CINENOVA SPOTLIGHT · FEATURED</div><h1>Dune: Part Two</h1><p>Journey into an extraordinary world of destiny, courage and adventure. Discover the story behind this cinematic experience.</p><div class="meta">2024&nbsp;&nbsp; • &nbsp;Sci-Fi&nbsp;&nbsp; • &nbsp;Adventure</div><button class="play" onclick="showInfo('Dune: Part Two','2024','A science-fiction adventure featured in the CineNova spotlight.')">▶ &nbsp; Explore title</button></div>
+</section>
+<aside class="side"><h3>Popular right now</h3>
+<div class="watch-item"><img src="https://image.tmdb.org/t/p/w300/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer"><div><strong>Oppenheimer</strong><small>Drama · 2023</small></div></div>
+<div class="watch-item"><img src="https://image.tmdb.org/t/p/w300/7WsyChQLEftFiDOVTGkdMKdh7g.jpg" alt="Avengers"><div><strong>Avengers</strong><small>Action · 2019</small></div></div>
+<div class="watch-item"><img src="https://image.tmdb.org/t/p/w300/q719jXXEzOoYaps6babgKnONONX.jpg" alt="Your Name"><div><strong>Your Name</strong><small>Anime · 2016</small></div></div>
+</aside>
+</div>
+<div class="genre-wrap"><div class="genre-label">Find by genre</div><div class="genres">
+<button class="genre active" onclick="setGenre('All',this)">✦ All titles</button><button class="genre" onclick="setGenre('Action',this)">Action</button><button class="genre" onclick="setGenre('Comedy',this)">Comedy</button><button class="genre" onclick="setGenre('Drama',this)">Drama</button><button class="genre" onclick="setGenre('Sci-Fi',this)">Sci-Fi</button><button class="genre" onclick="setGenre('Fantasy',this)">Fantasy</button><button class="genre" onclick="setGenre('Anime',this)">Anime</button><button class="genre" onclick="setGenre('Bollywood',this)">Bollywood</button>
+</div></div>
+<section class="section" id="trending"><div class="section-head"><h2>Trending</h2><div class="arrows"><button class="arrow" onclick="scrollRail('trendingRail',-1)">‹</button><button class="arrow" onclick="scrollRail('trendingRail',1)">›</button></div></div><div class="rail" id="trendingRail"></div></section>
+<section class="section" id="new"><div class="section-head"><h2>Popular Movies</h2><div class="arrows"><button class="arrow" onclick="scrollRail('movieRail',-1)">‹</button><button class="arrow" onclick="scrollRail('movieRail',1)">›</button></div></div><div class="rail" id="movieRail"></div></section>
+<section class="section" id="anime"><div class="section-head"><h2>Anime Collection</h2><div class="arrows"><button class="arrow" onclick="scrollRail('animeRail',-1)">‹</button><button class="arrow" onclick="scrollRail('animeRail',1)">›</button></div></div><div class="rail" id="animeRail"></div></section>
+<section class="section" id="about"><div class="section-head"><h2>About CineNova</h2></div><p style="color:#aaa;font-size:13px;line-height:1.8;max-width:800px">CineNova is an independent entertainment discovery platform for movie and anime fans. Explore curated titles, discover new stories and read original entertainment guides. CineNova does not host or distribute copyrighted films or episodes.</p></section>
+</main>
+<footer><div class="brand">CINE<span>NOVA</span></div><div class="footer-links"><a href="#about">About Us</a><a href="mailto:contact@yourdomain.com">Contact</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms</a><a href="disclaimer.html">Disclaimer</a></div><p>© 2026 CineNova. All rights reserved.</p></footer>
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="modal-box"><button class="close" onclick="closeModal()">×</button><h2 id="modalTitle"></h2><p id="modalText"></p></div></div>
+<script>
+const titles=[
+{t:"Dune: Part Two",y:"2024",kind:"Movie",genre:"Sci-Fi",img:"https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg"},
+{t:"Oppenheimer",y:"2023",kind:"Movie",genre:"Drama",img:"https://image.tmdb.org/t/p/w500/ptpr0kGAckfQkJeJ2r2Z7e2B4s.jpg"},
+{t:"The Batman",y:"2022",kind:"Movie",genre:"Action",img:"https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg"},
+{t:"Interstellar",y:"2014",kind:"Movie",genre:"Sci-Fi",img:"https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"},
+{t:"Joker",y:"2019",kind:"Movie",genre:"Drama",img:"https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg"},
+{t:"Avengers: Endgame",y:"2019",kind:"Movie",genre:"Action",img:"https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg"},
+{t:"The Martian",y:"2015",kind:"Movie",genre:"Sci-Fi",img:"https://image.tmdb.org/t/p/w500/5aGhaIH3nAN6KpoJ4k4e9T7F9kJ.jpg"},
+{t:"3 Idiots",y:"2009",kind:"Movie",genre:"Bollywood",img:"https://image.tmdb.org/t/p/w500/66A9MqXOyVFCssoloscw79z8Tew.jpg"},
+{t:"Dangal",y:"2016",kind:"Movie",genre:"Bollywood",img:"https://image.tmdb.org/t/p/w500/cJRPOLEexI7qp2DKtFfCh7YaaUG.jpg"},
+{t:"RRR",y:"2022",kind:"Movie",genre:"Action",img:"https://image.tmdb.org/t/p/w500/nEufeZlyAOLqO2brrs0yeF1lgXO.jpg"},
+{t:"Your Name",y:"2016",kind:"Anime",genre:"Anime",img:"https://image.tmdb.org/t/p/w500/q719jXXEzOoYaps6babgKnONONX.jpg"},
+{t:"Spirited Away",y:"2001",kind:"Anime",genre:"Anime",img:"https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg"},
+{t:"Suzume",y:"2022",kind:"Anime",genre:"Anime",img:"https://image.tmdb.org/t/p/w500/vIeu8WysZrTSFb2uhPViKjX9EcC.jpg"},
+{t:"A Silent Voice",y:"2016",kind:"Anime",genre:"Anime",img:"https://image.tmdb.org/t/p/w500/tuFaWiqX0TXoWu7DGNcmX3UW7sT.jpg"},
+{t:"Weathering With You",y:"2019",kind:"Anime",genre:"Anime",img:"https://image.tmdb.org/t/p/w500/qgrk7r1fV4IjuoeiGS5HOhXNdLJ.jpg"}
+];
+let genre="All";
+function makeCard(x){return `<article class="card" tabindex="0" onclick="showInfo('${x.t.replace(/'/g,"\\'")}','${x.y}','${x.kind} · ${x.genre}')"><div class="poster-wrap"><img src="${x.img}" alt="${x.t} poster" loading="lazy" onerror="this.style.opacity='.15'"></div><div class="rating">✦ CineNova pick &nbsp; · &nbsp; ${x.y}</div><h3>${x.t}</h3><div class="type">${x.kind} · ${x.genre}</div></article>`}
+function render(){const q=document.getElementById('search').value.toLowerCase();let list=titles.filter(x=>(genre==='All'||x.genre===genre||x.kind===genre)&&x.t.toLowerCase().includes(q));document.getElementById('trendingRail').innerHTML=list.slice(0,7).map(makeCard).join('');document.getElementById('movieRail').innerHTML=list.filter(x=>x.kind==='Movie').map(makeCard).join('');document.getElementById('animeRail').innerHTML=list.filter(x=>x.kind==='Anime').map(makeCard).join('')}
+function setGenre(g,b){genre=g;document.querySelectorAll('.genre').forEach(x=>x.classList.remove('active'));b.classList.add('active');render()}
+function scrollRail(id,d){document.getElementById(id).scrollBy({left:d*400,behavior:'smooth'})}
+function showInfo(t,y,desc){document.getElementById('modalTitle').textContent=t;document.getElementById('modalText').textContent=`${y} · ${desc}. This is an entertainment discovery listing. CineNova does not stream or provide downloads of copyrighted content.`;document.getElementById('modal').style.display='flex'}
+function closeModal(){document.getElementById('modal').style.display='none'}
+render();
+</script>
+</body>
+</html>
