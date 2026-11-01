@@ -3072,157 +3072,279 @@
   </script>
  </body>
  
-<style>
-#cn50 {
-  background:#080b12;
-  color:#fff;
-  padding:22px 12px;
-  font-family:Arial,sans-serif;
-}
-#cn50 h2 {font-size:24px;margin:0 0 18px}
-#cn50 .controls {
-  display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;
-}
-#cn50 input,#cn50 select {
-  padding:12px;border-radius:8px;
-  background:#171c28;color:white;
-  border:1px solid #333;flex:1;min-width:130px;
-}
-#cn50 .grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(135px,1fr));
-  gap:14px;
-}
-#cn50 .card {
-  background:#171c28;border-radius:10px;overflow:hidden;
-}
-#cn50 .poster {
-  width:100%;aspect-ratio:2/3;
-  object-fit:cover;display:block;background:#252b38;
-}
-#cn50 .info {padding:10px}
-#cn50 .info h3 {font-size:14px;margin:0 0 7px}
-#cn50 .info p {font-size:12px;color:#aaa;margin:5px 0}
-#cn50 .info a {
-  display:block;text-align:center;
-  padding:8px;margin-top:8px;
-  background:#e50914;color:white;
-  border-radius:6px;text-decoration:none;
-  font-size:12px;
-}
-#cn50 .empty {color:#aaa;padding:20px;text-align:center}
-</style>
+<!-- CINENOVA: 50 MOVIE & ANIME POSTERS -->
+<div id="cn50">
+  <h2>🎬 Explore Movies & Anime</h2>
 
-<section id="cn50">
-  <h2>🎬 CineNova – Movies Collection</h2>
+  <input id="cnSearch" type="search" placeholder="Search movies..." />
 
-  <div class="controls">
-    <input id="cnSearch" placeholder="Search movies...">
-    <select id="cnCategory">
-      <option value="All">All Movies</option>
-      <option>Bollywood</option>
-      <option>Hollywood</option>
-      <option>South Indian</option>
-      <option>Anime</option>
-    </select>
+  <div class="cn-filters">
+    <button data-filter="All">All</button>
+    <button data-filter="Bollywood">Bollywood</button>
+    <button data-filter="Hollywood">Hollywood</button>
+    <button data-filter="South Indian">South Indian</button>
+    <button data-filter="Anime">Anime</button>
   </div>
 
-  <div class="grid" id="cnGrid"></div>
-</section>
+  <p id="cnStatus">Loading posters...</p>
+  <div id="cnGrid"></div>
+</div>
+
+<style>
+#cn50 {
+  color: #fff;
+  background: #101018;
+  padding: 18px;
+  border-radius: 12px;
+  font-family: Arial, sans-serif;
+}
+#cn50 h2 {
+  font-size: 23px;
+  margin: 5px 0 18px;
+}
+#cnSearch {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background: #20202b;
+  color: white;
+  box-sizing: border-box;
+  margin-bottom: 14px;
+}
+#cn50 .cn-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+#cn50 .cn-filters button {
+  background: #292938;
+  color: white;
+  border: 1px solid #444;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+#cn50 .cn-filters button.active {
+  background: #e50914;
+  border-color: #e50914;
+}
+#cnGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+#cnGrid .cn-card {
+  min-width: 0;
+  overflow: hidden;
+  background: #20202b;
+  border-radius: 9px;
+}
+#cnGrid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  background: #30303b;
+}
+#cnGrid .cn-info {
+  padding: 9px;
+}
+#cnGrid .cn-title {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+#cnGrid .cn-category {
+  color: #aaa;
+  font-size: 11px;
+  margin-top: 5px;
+}
+#cn50 #cnStatus {
+  color: #bbb;
+  font-size: 13px;
+}
+@media (min-width: 650px) {
+  #cnGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1000px) {
+  #cnGrid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+</style>
 
 <script>
 (() => {
-const movies = [
-["Dangal",2016,"Bollywood","tt5074352"],
-["3 Idiots",2009,"Bollywood","tt1187043"],
-["Jawan",2023,"Bollywood","tt15354916"],
-["Pathaan",2023,"Bollywood","tt12844910"],
-["Dunki",2023,"Bollywood","tt15428134"],
-["Animal",2023,"Bollywood","tt13751694"],
-["Stree 2",2024,"Bollywood","tt27510174"],
-["12th Fail",2023,"Bollywood","tt23849204"],
-["Chhaava",2025,"Bollywood","tt27922706"],
-["War",2019,"Bollywood","tt7430722"],
-["PK",2014,"Bollywood","tt2338151"],
-["Shershaah",2021,"Bollywood","tt10295212"],
-["Drishyam 2",2022,"Bollywood","tt15501640"],
-["Bajrangi Bhaijaan",2015,"Bollywood","tt3863552"],
-["Zindagi Na Milegi Dobara",2011,"Bollywood","tt1562872"],
+  const movies = [
+    ["Dangal","Bollywood"],
+    ["3 Idiots","Bollywood"],
+    ["PK","Bollywood"],
+    ["Jawan","Bollywood"],
+    ["Pathaan","Bollywood"],
+    ["Animal","Bollywood"],
+    ["Dhurandhar","Bollywood"],
+    ["Chhaava","Bollywood"],
+    ["Bajrangi Bhaijaan","Bollywood"],
+    ["K.G.F: Chapter 1","South Indian"],
+    ["K.G.F: Chapter 2","South Indian"],
+    ["RRR","South Indian"],
+    ["Baahubali: The Beginning","South Indian"],
+    ["Baahubali 2: The Conclusion","South Indian"],
+    ["Pushpa: The Rise","South Indian"],
+    ["Pushpa 2: The Rule","South Indian"],
+    ["Kantara","South Indian"],
+    ["Vikram","South Indian"],
+    ["Leo","South Indian"],
+    ["Jailer","South Indian"],
+    ["Avengers: Endgame","Hollywood"],
+    ["Avatar","Hollywood"],
+    ["Titanic","Hollywood"],
+    ["Interstellar","Hollywood"],
+    ["Inception","Hollywood"],
+    ["The Dark Knight","Hollywood"],
+    ["Spider-Man: No Way Home","Hollywood"],
+    ["Joker","Hollywood"],
+    ["Jurassic Park","Hollywood"],
+    ["The Matrix","Hollywood"],
+    ["Your Name","Anime"],
+    ["Spirited Away","Anime"],
+    ["Suzume","Anime"],
+    ["Weathering with You","Anime"],
+    ["A Silent Voice","Anime"],
+    ["Demon Slayer: Mugen Train","Anime"],
+    ["One Piece Film: Red","Anime"],
+    ["The Boy and the Heron","Anime"],
+    ["Howl's Moving Castle","Anime"],
+    ["Princess Mononoke","Anime"],
+    ["My Neighbor Totoro","Anime"],
+    ["Grave of the Fireflies","Anime"],
+    ["The First Slam Dunk","Anime"],
+    ["Jujutsu Kaisen 0","Anime"],
+    ["Dragon Ball Super: Broly","Anime"],
+    ["The Garden of Words","Anime"],
+    ["Perfect Blue","Anime"],
+    ["Paprika","Anime"],
+    ["The Wind Rises","Anime"],
+    ["Ponyo","Anime"]
+  ];
 
-["Inception",2010,"Hollywood","tt1375666"],
-["Interstellar",2014,"Hollywood","tt0816692"],
-["Avatar",2009,"Hollywood","tt0499549"],
-["Titanic",1997,"Hollywood","tt0120338"],
-["The Dark Knight",2008,"Hollywood","tt0468569"],
-["Avengers Endgame",2019,"Hollywood","tt4154796"],
-["Spider-Man No Way Home",2021,"Hollywood","tt10872600"],
-["Joker",2019,"Hollywood","tt7286456"],
-["Oppenheimer",2023,"Hollywood","tt15398776"],
-["Dune Part Two",2024,"Hollywood","tt15239678"],
-["The Batman",2022,"Hollywood","tt1877830"],
-["Iron Man",2008,"Hollywood","tt0371746"],
-["Jurassic Park",1993,"Hollywood","tt0107290"],
-["The Matrix",1999,"Hollywood","tt0133093"],
-["Gladiator",2000,"Hollywood","tt0172495"],
+  const grid = document.getElementById("cnGrid");
+  const search = document.getElementById("cnSearch");
+  const status = document.getElementById("cnStatus");
+  const buttons = document.querySelectorAll("#cn50 .cn-filters button");
 
-["RRR",2022,"South Indian","tt8178634"],
-["Baahubali The Beginning",2015,"South Indian","tt2631186"],
-["Baahubali 2",2017,"South Indian","tt4849438"],
-["Pushpa The Rise",2021,"South Indian","tt9389998"],
-["Kalki 2898 AD",2024,"South Indian","tt12735488"],
-["KGF Chapter 1",2018,"South Indian","tt7838252"],
-["KGF Chapter 2",2022,"South Indian","tt10698680"],
-["Vikram",2022,"South Indian","tt9179430"],
-["Leo",2023,"South Indian","tt15654328"],
-["Jailer",2023,"South Indian","tt11663228"],
+  let selected = "All";
+  let loadedMovies = [];
 
-["Your Name",2016,"Anime","tt5311514"],
-["Spirited Away",2001,"Anime","tt0245429"],
-["A Silent Voice",2016,"Anime","tt5323662"],
-["Suzume",2022,"Anime","tt16428256"],
-["Weathering With You",2019,"Anime","tt9426210"],
-["Demon Slayer Mugen Train",2020,"Anime","tt11032374"],
-["Howl's Moving Castle",2004,"Anime","tt0347148"],
-["Princess Mononoke",1997,"Anime","tt0119698"],
-["The Boy and the Heron",2023,"Anime","tt6587046"],
-["Jujutsu Kaisen 0",2021,"Anime","tt14331144"]
-];
+  function render() {
+    const term = search.value.toLowerCase();
 
-const grid=document.getElementById("cnGrid");
-const search=document.getElementById("cnSearch");
-const category=document.getElementById("cnCategory");
+    const filtered = loadedMovies.filter(movie =>
+      (selected === "All" || movie.category === selected) &&
+      movie.title.toLowerCase().includes(term)
+    );
 
-function render() {
- const q=search.value.toLowerCase();
- const c=category.value;
- const filtered=movies.filter(m=>
-   m[0].toLowerCase().includes(q) &&
-   (c==="All" || m[2]===c)
- );
+    grid.innerHTML = "";
 
- grid.innerHTML=filtered.map(m=>`
- <article class="card">
-   <img class="poster"
-    src="https://img.omdbapi.com/?i=${m[3]}&apikey=YOUR_API_KEY"
-    alt="${m[0]} poster"
-    loading="lazy">
-   <div class="info">
-    <h3>${m[0]}</h3>
-    <p>${m[1]} • ${m[2]}</p>
-    <a href="https://www.imdb.com/title/${m[3]}/"
-       target="_blank" rel="noopener">Movie Details</a>
-    <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(m[0]+" official trailer")}"
-       target="_blank" rel="noopener">Watch Trailer</a>
-   </div>
- </article>`).join("");
+    filtered.forEach(movie => {
+      const card = document.createElement("div");
+      card.className = "cn-card";
 
- if(!filtered.length) grid.innerHTML='<div class="empty">No movies found</div>';
-}
-search.addEventListener("input",render);
-category.addEventListener("change",render);
-render();
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.alt = movie.title + " poster";
+      img.src = movie.poster || "";
+
+      img.onerror = () => {
+        img.onerror = null;
+        img.alt = "Poster unavailable";
+        img.style.background = "#30303b";
+      };
+
+      const info = document.createElement("div");
+      info.className = "cn-info";
+
+      const title = document.createElement("div");
+      title.className = "cn-title";
+      title.textContent = movie.title;
+
+      const category = document.createElement("div");
+      category.className = "cn-category";
+      category.textContent = movie.category;
+
+      info.append(title, category);
+      card.append(img, info);
+      grid.appendChild(card);
+    });
+
+    status.textContent = filtered.length + " titles found";
+  }
+
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      selected = button.dataset.filter;
+      buttons.forEach(b => b.classList.remove("active"));
+      button.classList.add("active");
+      render();
+    });
+  });
+
+  buttons[0].classList.add("active");
+  search.addEventListener("input", render);
+
+  async function loadPosters() {
+    const titles = movies.map(m => m[0]);
+
+    const url =
+      "https://en.wikipedia.org/w/api.php?action=query" +
+      "&format=json&origin=*&prop=pageimages" +
+      "&piprop=thumbnail&pilicense=any&pithumbsize=500" +
+      "&titles=" + encodeURIComponent(titles.join("|"));
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Poster request failed");
+
+      const data = await response.json();
+      const pages = Object.values(data.query.pages);
+
+      const imageMap = {};
+      pages.forEach(page => {
+        if (page.thumbnail && page.thumbnail.source) {
+          imageMap[page.title.toLowerCase()] =
+            page.thumbnail.source;
+        }
+      });
+
+      loadedMovies = movies.map(([title, category]) => {
+        const page = pages.find(p =>
+          p.title.toLowerCase() === title.toLowerCase()
+        );
+
+        return {
+          title,
+          category,
+          poster: page && page.thumbnail
+            ? page.thumbnail.source
+            : ""
+        };
+      });
+
+      render();
+    } catch (error) {
+      status.textContent =
+        "Posters could not load. Please refresh the page.";
+    }
+  }
+
+  loadPosters();
 })();
-  </script>
+</script>
+<!-- END CINENOVA POSTERS -->
  
-</html>
+ </html>
 
