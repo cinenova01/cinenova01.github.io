@@ -3358,6 +3358,216 @@
 </script>
 <!-- END CINENOVA POSTERS -->
  
+<!-- CINENOVA: 50 HOLLYWOOD MOVIES -->
+<section id="cn50-section">
+  <div class="cn50-header">
+    <div>
+      <h2>Hollywood Movies</h2>
+      <p>Trending & Popular English Movies</p>
+    </div>
+    <span>50 MOVIES</span>
+  </div>
+
+  <input
+    type="search"
+    id="cn50-search"
+    placeholder="Search Hollywood movies..."
+  >
+
+  <div class="cn50-grid" id="cn50-grid"></div>
+  <p class="cn50-credit">Movie poster images: TMDB</p>
+</section>
+
+<style>
+#cn50-section {
+  padding: 22px 12px;
+  color: inherit;
+  font-family: inherit;
+}
+.cn50-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+.cn50-header h2 {
+  font-size:23px;
+  margin:0 0 5px;
+}
+.cn50-header p {
+  font-size:13px;
+  opacity:.7;
+  margin:0;
+}
+.cn50-header span {
+  font-size:10px;
+  padding:7px 10px;
+  border:1px solid #777;
+  border-radius:20px;
+}
+#cn50-search {
+  width:100%;
+  box-sizing:border-box;
+  padding:13px;
+  margin-bottom:18px;
+  border:1px solid #555;
+  border-radius:9px;
+  background:#171717;
+  color:white;
+  font-size:14px;
+}
+.cn50-grid {
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:13px 10px;
+}
+.cn50-card {
+  min-width:0;
+  text-decoration:none;
+  color:inherit;
+}
+.cn50-card img {
+  width:100%;
+  aspect-ratio:2/3;
+  object-fit:cover;
+  display:block;
+  border-radius:9px;
+  background:#252525;
+}
+.cn50-card h3 {
+  font-size:12px;
+  line-height:1.4;
+  margin:7px 0 3px;
+  font-weight:600;
+}
+.cn50-card p {
+  font-size:11px;
+  opacity:.65;
+  margin:0;
+}
+.cn50-credit {
+  text-align:center;
+  font-size:11px;
+  opacity:.6;
+  margin-top:20px;
+}
+@media(max-width:600px) {
+  .cn50-grid {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:15px 10px;
+  }
+}
+@media(min-width:601px) and (max-width:900px) {
+  .cn50-grid {
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+}
+</style>
+
+<script>
+(function(){
+  const movies = [
+    ["Inception",2010,"oYuLEt3zVCKq57qu2F8dT7NIa6f"],
+    ["Interstellar",2014,"gEU2QniE6E77NI6lCU6MxlNBvIx"],
+    ["The Dark Knight",2008,"qJ2tW6WMUDux911r6m7haRef0WH"],
+    ["Avengers: Endgame",2019,"or06FN3Dka5tukK1e9sl16pB3iy"],
+    ["Joker",2019,"udDclJoHjfjb8Ekgsd4FDteOkCU"],
+    ["Dune: Part Two",2024,"1pdfLvkbY9ohJlCjQH2CZjjYVvJ"],
+    ["Oppenheimer",2023,"ptpr0kGAckfQkJeJIt8st5dglvd"],
+    ["Top Gun: Maverick",2022,"62HCnUTziyWcpDaBO2i1DX17ljH"],
+    ["Spider-Man: No Way Home",2021,"1g0dhYtq4irTY1GPXvft6k4YLjm"],
+    ["Iron Man",2008,"78lPtwv72eTNqFW9COBYI0dWDJa"],
+    ["Jurassic Park",1993,"oU7Oq2kFAAlGqbU4VoAE36g4hoI"],
+    ["Pulp Fiction",1994,"d5iIlFn5s0ImszYzBPb8JPIfbXD"],
+    ["The Lord of the Rings",2003,"rCzpDGLbOoPwLjy3OAm5NUPOTrC"],
+    ["Gladiator",2000,"ty8TGRuvJLPUmAR1H1nRIsgwvim"],
+    ["Harry Potter",2001,"wuMc08IPKEatf9rnMNXvIDxqP4W"],
+    ["Toy Story",1995,"uXDfjJbdP4ijW5hWSBrPrlKpxab"],
+    ["Coco",2017,"gGEsBPAijhVUFoiNpgZXqRVWJt2"],
+    ["Up",2009,"vpbaStTMt8qqXaEgnOR2EE4DNJk"],
+    ["Parasite",2019,"7IiTTgloJzvGI1TAYymCfbfl3vT"],
+    ["Whiplash",2014,"7fn624j5lj3xTme2SgiLCeuedmO"],
+    ["Forrest Gump",1994,"arw2vcBveWOVZr6pxd9XTd1TdQa"],
+    ["Titanic",1997,"9xjZS2rlVxm8SFx8kPC3aIGCOYQ"],
+    ["The Godfather",1972,"3bhkrj58Vtu7enYsRolD1fZdja1"],
+    ["The Social Network",2010,"n0ybibhJtQ5icDqTp8eRytcIHJx"],
+    ["The Batman",2022,"74xTEgt7R36Fpooo50r9T25onhq"],
+    ["John Wick: Chapter 4",2023,"vZloFAK7NmvMGKE7VkF5UHaz0I"],
+    ["Deadpool & Wolverine",2024,"8cdWjvZQUExUUTzyp4t6EDMubfO"],
+    ["Inside Out 2",2024,"vpnVM9B6NMmQpWeZvzLvDESb2QY"],
+    ["The Super Mario Bros. Movie",2023,"qNBAXBIQlnOThrVvA6mA2B5ggV6"],
+    ["Everything Everywhere",2022,"w3LxiVYdWWRvEVdn5RYq6jIqkb1"],
+    ["Mad Max: Fury Road",2015,"8tZYtuWezp8JbcsvHYO0O46tFbo"],
+    ["The Lion King",2019,"dzBtMocZuJbjLOXvrl4zGYigDzh"],
+    ["Frozen",2013,"kgwjIb2JDHRhNk13lmSxiClFjVk"],
+    ["No Time to Die",2021,"iUgygt3fscRoKWCV1d0C7FbM9TP"],
+    ["Knives Out",2019,"pThyQovXQrw2m0s9x82twj48Jq4"],
+    ["La La Land",2016,"uDO8zWDhfWwoFdKS4fzkUJt0Rf0"],
+    ["The Grand Budapest Hotel",2014,"eWdyYQreja6JGCzqHWXpWHDrrPo"],
+    ["A Quiet Place",2018,"nAU74GmpUk7t5iklEp3bufwDq4n"],
+    ["Get Out",2017,"tFXcEccSQMf3lfhfXKSU9iRBpa3"],
+    ["Logan",2017,"fnbjcRDYn6YviCcePDnGdyAkYsB"],
+    ["Black Panther",2018,"uxzzxijgPIY7slzFvMotPv8wjKA"],
+    ["Dunkirk",2017,"b4Oe15CGLL61Ped0RAS9JpqdmCt"],
+    ["Fight Club",1999,"pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK"],
+    ["The Shawshank Redemption",1994,"9cqNxx0GxF0bflZmeSMuL5tnGzr"],
+    ["Dune",2021,"d5NXSklXo0qyIYkgV94XAgMIckC"],
+    ["Blade Runner 2049",2017,"gajva2L0rPYkEWjzgFlBXCAVBE5"],
+    ["The Prestige",2006,"tRNlZbgNCNOpLpbPEz5lWob22w"],
+    ["The Wolf of Wall Street",2013,"34m2tygAYBGqA9MXKhRDtzYd4MR"],
+    ["The Martian",2015,"3ndAx3weG6KDkJIRMCi5vXX6Dyb"],
+    ["The Hunger Games",2012,"yXCbOiVDCxO71zI7cuwBRXdftq8"],
+    ["The Matrix",1999,"f89U3ADr1oiB1s9GkdPOEpXUk5H"]
+  ];
+
+  const grid = document.getElementById("cn50-grid");
+  const search = document.getElementById("cn50-search");
+
+  function showMovies(query="") {
+    grid.innerHTML = "";
+    const filtered = movies.filter(m =>
+      m[0].toLowerCase().includes(query.toLowerCase())
+    );
+
+    filtered.forEach(movie => {
+      const card = document.createElement("a");
+      card.className = "cn50-card";
+      card.href = "https://www.themoviedb.org/search?query=" +
+        encodeURIComponent(movie[0]);
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+
+      const img = document.createElement("img");
+      img.src = "https://image.tmdb.org/t/p/w500/" +
+        movie[2] + ".jpg";
+      img.alt = movie[0] + " poster";
+      img.loading = "lazy";
+      img.onerror = function() {
+        this.onerror = null;
+        this.src = "https://placehold.co/300x450/222222/ffffff?text=Poster+Unavailable";
+      };
+
+      const title = document.createElement("h3");
+      title.textContent = movie[0];
+
+      const year = document.createElement("p");
+      year.textContent = movie[1];
+
+      card.append(img,title,year);
+      grid.appendChild(card);
+    });
+  }
+
+  search.addEventListener("input", () =>
+    showMovies(search.value)
+  );
+
+  showMovies();
+})();
+</script>
+<!-- END CINENOVA HOLLYWOOD MOVIES -->
+  
  </body>
 </html>
 
